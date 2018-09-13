@@ -1,0 +1,67 @@
+# ----------------------------------------------------------------------------------//
+# Serverless Bots Service
+# Charlie (( BETA v2.1 ))
+# CRKS | August 6, 2018 | Updated:
+# ----------------------------------------------------------------------------------//
+
+service: bots
+app: charlie
+tenant: davidmichael
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  timeout: 300
+  stage: ${file(./meta.json):stage}
+  region: ${file(./meta.json):region}
+
+functions:
+  login:
+    handler: services/login.handler
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+  follow:
+    handler: services/follow.handler
+    events:
+      - http:
+          path: follow
+          method: post
+          cors: true
+  unfollow:
+    handler: services/unfollow.handler
+    events:
+      - http:
+          path: unfollow
+          method: post
+          cors: true
+  scrape:
+    handler: services/scrape.handler
+    events:
+      - http:
+          path: scrape
+          method: post
+          cors: true
+  analytics:
+    handler: services/analytics.handler
+    events:
+      - http:
+          path: analytics
+          method: post
+          cors: true
+  mail:
+    handler: services/mail.handler
+    events:
+      - http:
+          path: mail
+          method: post
+          cors: true
+
+plugins:
+  - serverless-plugin-chrome
+
+package:
+  exclude:
+    - node_modules/puppeteer/.local-chromium/** # exclude puppeteer chrome if exists
